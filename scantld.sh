@@ -9,4 +9,4 @@
 
 cd ${TLDSCANDIR}
 
-python3 getnexttld.py | subfinder | nuclei -es info -t http -rl 50 -c 10
+python3 getnexttld.py | subfinder | nuclei -es info -t http -rl 50 -c 10 | notify
