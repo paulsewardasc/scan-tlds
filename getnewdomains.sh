@@ -5,9 +5,11 @@ NEWFILE=newhttpxscan.txt
 CURRENTDOMAINS=currentdomains.txt
 CURRENTHTTP=currenthttpxscan.txt
 TLDS=tlds.txt
-#exec 3>&1 4>&2
-#trap 'exec 2>&4 1>&3' 0 1 2 3
-#exec 1>/tmp/log.out 2>&1
+if [ ! -f $TLDS ]
+then
+    echo "Please create a tlds.txt file containing your top level domains"
+    exit
+fi
 if [[ $1 != *"skip"* ]];then
 	(
 	cd $HOME/$FOLDER
