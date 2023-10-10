@@ -1,0 +1,23 @@
+id: directory-listing
+info:
+  name: Shows sites that have a bank directory listing
+  author: Ferret
+  severity: high 
+  description: Detect common folders
+  tags: tech
+
+http:
+  - method: GET
+
+    path:
+      - "{{BaseURL}}/"
+
+    matchers:
+      - type: word
+        words:
+          - "Index of"
+        part: body
+      - type: word
+        words:
+          - "Directory listing for"
+        part: body

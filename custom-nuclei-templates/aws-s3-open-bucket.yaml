@@ -1,0 +1,78 @@
+id: common-folders-found
+info:
+  name: AWS S3 Bucket Publicly Accessible
+  author: Ferret
+  severity: info
+  description: Detect common folders
+  tags: tech
+
+http:
+  - method: GET
+
+    path:
+      - "{{BaseURL}}/{{path}}"
+
+    payloads:
+      path:
+        - 
+        - static/
+        - assets/
+        - uploads/
+        - upload/
+        - images/
+        - imgs/
+        - attachments/
+        - admin/
+        - assets/
+        - audio/
+        - blog/
+        - cgi-bin/
+        - components/
+        - contact/
+        - css/
+        - downloads/
+        - email/
+        - fonts/
+        - forum/
+        - gallery/
+        - img/
+        - includes/
+        - index/
+        - js/
+        - login/
+        - media/
+        - mp3/
+        - music/
+        - news/
+        - photos/
+        - pictures/
+        - podcasts/
+        - portfolio/
+        - product/
+        - products/
+        - public/
+        - resources/
+        - scripts/
+        - search/
+        - secure/
+        - services/
+        - shop/
+        - shopping/
+        - sitemap/
+        - ssl/
+        - static/
+        - support/
+        - themes/
+        - tmp/
+        - uploads/
+        - user/
+        - users/
+        - videos/
+        - vimeo/
+        - web/
+        - wordpress/
+  
+    matchers:
+      - type: status
+        status:
+          - 200
