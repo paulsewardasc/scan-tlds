@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ${{TLDSCANDIR}}
 FOLDER=scantlds
 NEWDOMAINS=newdomains.txt
 NEWFILE=newhttpxscan.txt
