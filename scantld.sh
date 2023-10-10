@@ -7,6 +7,6 @@
 ### Change the line below to point to the folder with the files in or add the environmental variable TLDSCANDIR to .bashrc
 ### e.g. export TLDSCANDIR="/opt/scantlds"
 
-cd ${{TLDSCANDIR}}
+cd ${TLDSCANDIR}
 
-python3 .py | subfinder | nuclei -es info -t http -rl 50 -c 10
+python3 getnexttld.py | subfinder | nuclei -es info -t http -rl 50 -c 10
