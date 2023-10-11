@@ -1,11 +1,5 @@
 #!/usr/bin/bash
 
-if [ -z "$SCRIPT" ]
-then
-    /usr/bin/script /tmp/log.txt /bin/bash -c "$0 $*"
-    exit 0
-fi
-
 ### This program getnexttld.py looks for a file called tlds.txt with Top Level Domains in and saves it's place in a file called tlds.ind ###
 
 ### You can the run this using a cron to scan a TLD every hour or day depending on the number of TLDs you have
