@@ -9,4 +9,4 @@
 
 cd ${TLDSCANDIR}
 
-python3 getnexttld.py | subfinder | nuclei -es info -t http -rl 50 -c 10 | notify -bulk
+python3 getnexttld.py | subfinder | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 98.97.96.95" | notify -bulk
