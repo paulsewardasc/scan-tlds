@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+set -x
+{
 
 ### This program getnexttld.py looks for a file called tlds.txt with Top Level Domains in and saves it's place in a file called tlds.ind ###
 
@@ -10,3 +12,4 @@
 cd ${TLDSCANDIR}
 
 python3 getnexttld.py | subfinder | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 98.97.96.95" | notify -bulk
+} > /tmp/scantld.log 2>&1
