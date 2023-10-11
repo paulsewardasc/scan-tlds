@@ -12,6 +12,7 @@ set -x
 cd ${TLDSCANDIR}
 
 > output.txt
+> subs.txt
 python3 getnexttld.py | subfinder -o subs.txt
 for i in $(cat subs.txt); do
   echo "[+] $i"
