@@ -11,15 +11,16 @@ set -x
 
 cd ${TLDSCANDIR}
 
-> output.txt
-> subs.txt
-python3 getnexttld.py | subfinder -o subs.txt
-for i in $(cat subs.txt); do
-  echo "[+] $i"
-  echo $i | nuclei -es info -t http  -H "X-Forwarded-For: 10.255.255.254" -silent -o output.txt
-  #echo $i | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 10.255.255.254" -silent -o output.txt
-  if [[ $(wc -l < output.txt) -ge 1 ]]; then
-    nuclei -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.255" | notify -bulk
-  fi
+OUTPUT=$(mktemp output-XXXXXX)
+SUBS=$(mktemp subs-XXXXXX)
+python3 getnexttld.py | subfinder -o $SUBS
+cat $SUBS | | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
+echo $i | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
+cat $OUTPUT
+if [[ $(wc -l < output.txt) -ge 1 ]]; then
+  #nuclei -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.255" | notify -bulk
+fi
 done
+rm $OUTPUT
+rm $SUBS
 } > /tmp/scantld.log 2>&1
