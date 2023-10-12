@@ -16,7 +16,10 @@ def read_increment_and_write_number(filename):
     number = int(f.readline())
 
     # Increment the number.
-    number += 1
+    if sys.argv[1] == "SKIP":
+      None
+    else
+      number += 1
 
     # Write the incremented number back to the file.
     f.seek(0)
