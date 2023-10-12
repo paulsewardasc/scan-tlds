@@ -14,7 +14,7 @@ cd ${TLDSCANDIR}
 OUTPUT=$(mktemp output-XXXXXX)
 SUBS=$(mktemp subs-XXXXXX)
 python3 getnexttld.py | subfinder -o $SUBS
-cat $SUBS | | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
+cat $SUBS | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
 echo $i | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
 cat $OUTPUT
 if [[ $(wc -l < output.txt) -ge 1 ]]; then
