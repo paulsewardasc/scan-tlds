@@ -18,7 +18,7 @@ def read_increment_and_write_number(filename):
     # Increment the number.
     if sys.argv[1] == "SKIP":
       None
-    else
+    else:
       number += 1
 
     # Write the incremented number back to the file.
