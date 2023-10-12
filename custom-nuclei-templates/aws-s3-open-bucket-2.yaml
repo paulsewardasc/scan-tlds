@@ -1,7 +1,7 @@
 id: directory-listing
 info:
   name: Shows sites that have a bank directory listing
-  author: Ferret
+  author: PaulS59
   severity: high 
   description: Detect common folders
   tags: tech

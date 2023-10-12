@@ -1,7 +1,7 @@
 id: common-folders-found
 info:
   name: AWS S3 Bucket Publicly Accessible
-  author: Ferret
+  author: PaulS59
   severity: info
   description: Detect common folders
   tags: tech

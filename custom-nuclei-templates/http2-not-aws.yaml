@@ -1,0 +1,19 @@
+id: possible-http2-ddos
+info:
+  name: Possible HTTP2 DDOS
+  author: PaulS59
+  severity: high 
+  description: Checks for servers not behind AWS ALB using HTTP2
+  tags: tech
+
+http:
+  - method: HEAD
+
+    path:
+      - "{{BaseURL}}/"
+
+    matchers:
+      - type: word
+        words:
+          - "HTTP/2"
+        part: header
