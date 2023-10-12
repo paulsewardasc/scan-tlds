@@ -21,7 +21,6 @@ if [[ $(wc -l < output.txt) -ge 1 ]]; then
   echo "Full scan"
   #nuclei -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.255" | notify -bulk
 fi
-done
 rm $OUTPUT
 rm $SUBS
 } > /tmp/scantld.log 2>&1
