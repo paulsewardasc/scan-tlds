@@ -16,7 +16,7 @@ def read_increment_and_write_number(filename):
     number = int(f.readline())
 
     # Increment the number.
-    if len(sys.argv) = 0:
+    if len(sys.argv) == 0:
       number += 1
 
     # Write the incremented number back to the file.
