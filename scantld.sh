@@ -1,6 +1,12 @@
 #!/usr/bin/bash
 set -x
 {
+RUNNING="/tmp/scantld.pid"
+if [ -f "$RUNNING" ]
+then
+  exit
+fi
+date > $RUNNING
 . ~/.bashrc
 ### This program getnexttld.py looks for a file called tlds.txt with Top Level Domains in and saves it's place in a file called tlds.ind ###
 
@@ -23,4 +29,5 @@ if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
 fi
 rm $OUTPUT
 rm $SUBS
+rm $RUNNING
 } > /tmp/scantld.log 2>&1
