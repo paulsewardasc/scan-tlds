@@ -24,7 +24,7 @@ cat $SUBS | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 10.255.25
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
   SITES=$(cat $OUTPUT | perl -pe "s{.*?https?://(.*?)/.*}{\1}" | sort -u)
   for i in $SITES; do
-    echo $i | nuclei -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.255" | notify -bulk
+    echo $i | nuclei -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.255" | notify -bulk -cl 10000
   done
 fi
 rm $OUTPUT
