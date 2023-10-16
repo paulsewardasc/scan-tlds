@@ -25,6 +25,8 @@ if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
   cat $OUTPUT | notify -bulk -cl 10000
   cat $OUTPUT | awk 'BEGIN {print "```SCAN Summary\r"} {print $0} END {print "```"}' | perl -pe 's{\n}{\r}gsx' | notify -p slack -bulk
   cat $OUTPUT | awk 'BEGIN {print "SCAN Summary\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk
+  DTE=$(date +%Y%m%d%H%M%S)
+  cat $OUTPUT > resutls/$DTE.txt
   
   SITES=$(cat $OUTPUT | perl -pe "s{.*?https?://(.*?)/.*}{\1}" | sort -u)
   #for i in $SITES; do
