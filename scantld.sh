@@ -20,13 +20,16 @@ cd ${TLDSCANDIR}
 OUTPUT=$(mktemp output-XXXXXX)
 SUBS=$(mktemp subs-XXXXXX)
 python3 getnexttld.py $1 | subfinder -o $SUBS
-cat $SUBS | nuclei -es info -t http -rl 50 -c 10  -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
+cat $SUBS | nuclei -es info -rl 50 -c 10  -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
   cat $OUTPUT | notify -bulk -cl 10000
+  cat $OUTPUT | awk 'BEGIN {print "```SCAN Summary\r"} {print $0} END {print "```"}' | perl -pe 's{\n}{\r}gsx' | notify -p slack -bulk
+  cat $OUTPUT | awk 'BEGIN {print "SCAN Summary\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk
+  
   SITES=$(cat $OUTPUT | perl -pe "s{.*?https?://(.*?)/.*}{\1}" | sort -u)
-  for i in $SITES; do
-    echo $i | nuclei -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.255" | notify -bulk -cl 10000
-  done
+  #for i in $SITES; do
+  #  echo $i | nuclei -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.255" | notify -bulk -cl 10000
+  #done
 fi
 rm $OUTPUT
 rm $SUBS
