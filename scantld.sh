@@ -31,7 +31,7 @@ else
   echo $ARG1 | subfinder -o $SUBS
 fi
 
-cat $SUBS | nuclei -es info -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
+cat $SUBS | nuclei -es info -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.254" -ts -silent -o $OUTPUT
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
   cat $OUTPUT | awk 'BEGIN {print "```SCAN Summary\r"} {print $0} END {print "```"}' | perl -pe 's{\n}{\r}gsx' | notify -p slack -bulk -cl 10000
   cat $OUTPUT | awk 'BEGIN {print "SCAN Summary\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk -cl 10000
