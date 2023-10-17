@@ -20,13 +20,12 @@ cd ${TLDSCANDIR}
 OUTPUT=$(mktemp output-XXXXXX)
 SUBS=$(mktemp subs-XXXXXX)
 python3 getnexttld.py $1 | subfinder -o $SUBS
-cat $SUBS | nuclei -es info -rl 50 -c 10  -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
+cat $SUBS | nuclei -es info -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
-  cat $OUTPUT | notify -bulk -cl 10000
-  cat $OUTPUT | awk 'BEGIN {print "```SCAN Summary\r"} {print $0} END {print "```"}' | perl -pe 's{\n}{\r}gsx' | notify -p slack -bulk
-  cat $OUTPUT | awk 'BEGIN {print "SCAN Summary\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk
+  cat $OUTPUT | awk 'BEGIN {print "```SCAN Summary\r"} {print $0} END {print "```"}' | perl -pe 's{\n}{\r}gsx' | notify -p slack -bulk -cl 10000
+  cat $OUTPUT | awk 'BEGIN {print "SCAN Summary\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk -cl 10000
   DTE=$(date +%Y%m%d%H%M%S)
-  cat $OUTPUT > resutls/$DTE.txt
+  cat $OUTPUT > results/$DTE.txt
   
   SITES=$(cat $OUTPUT | perl -pe "s{.*?https?://(.*?)/.*}{\1}" | sort -u)
   #for i in $SITES; do
