@@ -19,7 +19,18 @@ cd ${TLDSCANDIR}
 
 OUTPUT=$(mktemp output-XXXXXX)
 SUBS=$(mktemp subs-XXXXXX)
-python3 getnexttld.py $1 | subfinder -o $SUBS
+# Check if the argument is empty.
+if [[ -z $1 ]]; then
+  python3 getnexttld.py | subfinder -o $SUBS
+else
+  ARG1=$1
+fi
+if [[ "$ARG1" == "NOINC" ]]; then
+  python3 getnexttld.py NOINC | subfinder -o $SUBS
+else
+  echo $ARG1 | subfinder -o $SUBS
+fi
+
 cat $SUBS | nuclei -es info -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.254" -silent -o $OUTPUT
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
   cat $OUTPUT | awk 'BEGIN {print "```SCAN Summary\r"} {print $0} END {print "```"}' | perl -pe 's{\n}{\r}gsx' | notify -p slack -bulk -cl 10000
