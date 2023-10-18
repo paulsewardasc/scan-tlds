@@ -33,7 +33,9 @@ fi
 
 cat $SUBS | nuclei -es info -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.254" -ts -silent -o $OUTPUT
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
-  cat $OUTPUT | awk 'BEGIN {print "```SCAN Summary\r"} {print $0} END {print "```"}' | perl -pe 's{\n}{\r}gsx' | notify -p slack -bulk -cl 10000
+  SLACK_API_TOKEN=$(cat /home/paul/.config/notify/provider-config.yaml | grep "slack_webhook_url" | awk '{print $2}' | perl -pe "s{\"}{}g;s{.*services/(.*)}{\1}")
+  export SLACK_API_TOKEN
+  ./send_to_slack
   cat $OUTPUT | awk 'BEGIN {print "SCAN Summary\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk -cl 10000
   DTE=$(date +%Y%m%d%H%M%S)
   cat $OUTPUT > results/$DTE.txt
