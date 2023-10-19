@@ -14,6 +14,7 @@ def read_increment_and_write_number(filename):
   with open(filename, 'r+') as f:
     # Read the first line of the file.
     number = int(f.readline())
+    print(f'[-] Number: {number}')
 
     # Increment the number.
     if len(sys.argv) == 1:
