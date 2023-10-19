@@ -43,7 +43,8 @@ if __name__ == '__main__':
     line = lines[lineno].rstrip()
   except:
     lineno = 0
-    os.remove(indfilename)
+    with open(indfilename, 'w') as f:
+      f.write('1')
     line = lines[lineno].rstrip()
   print_to_stdout(line)
 
