@@ -4,6 +4,8 @@ if [ -f "$RUNNING" ]
 then
   exit
 fi
+set -x
+{
 date > $RUNNING
 . ~/.bashrc
 
@@ -40,4 +42,4 @@ fi
 rm $OUTPUT
 rm $IPS
 rm $RUNNING
-
+} > /tmp/scanips.log 2>&1
