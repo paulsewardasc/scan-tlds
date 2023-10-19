@@ -24,11 +24,11 @@ if [[ -z $1 ]]; then
   python3 getnexttld.py | subfinder -o $SUBS
 else
   ARG1=$1
-fi
-if [[ "$ARG1" == "NOINC" ]]; then
-  python3 getnexttld.py NOINC | subfinder -o $SUBS
-else
-  echo $ARG1 | subfinder -o $SUBS
+  if [[ "$ARG1" == "NOINC" ]]; then
+    python3 getnexttld.py NOINC | subfinder -o $SUBS
+  else
+    echo $ARG1 | subfinder -o $SUBS
+  fi
 fi
 
 cat $SUBS | nuclei -es info -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.254" -ts -silent -o $OUTPUT
