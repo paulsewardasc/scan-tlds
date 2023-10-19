@@ -45,6 +45,6 @@ if __name__ == '__main__':
     lineno = 0
     os.remove(indfilename)
     line = lines[lineno].rstrip()
-  print_to_stdout(line)
+  print_to_stdout(line, lineno)
 
 
