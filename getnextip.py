@@ -43,7 +43,7 @@ if __name__ == '__main__':
   try:
     line = lines[lineno].rstrip()
   except:
-    lineno = 0
+    lineno = 1
     os.remove(indfilename)
     line = lines[lineno].rstrip()
   print_to_stdout(line, lineno)
