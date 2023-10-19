@@ -15,11 +15,15 @@ def send_code_to_slack(code):
 if __name__ == '__main__':
   # Get the filename from the first argument passed to the script.
   filename = sys.argv[1]
+  try:
+    title = sys.argv[2]
+  except:
+    title = 'SCAN Summary'
 
   # Read the contents of the text file.
   with open(filename, "r") as f:
     code = f.read()
-  code = f'SCAN Summary\n```{code}```'
+  code = f'{title}\n```{code}```'
 
   print(f'[+] Sending: {code}')
 
