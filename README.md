@@ -8,7 +8,6 @@ Scans TLDs for new domains and then scans those domains
 * [Subfinder] (https://github.com/projectdiscovery/subfinder)
 * [HTTPX] (https://github.com/projectdiscovery/httpx)
 * [Anew] (https://github.com/tomnomnom/anew)
-* [Python 3 Slack] (python3 -m pip install slack_sdk)
 
 Note. The script assumes the go files are in $HOME/go/bin
 

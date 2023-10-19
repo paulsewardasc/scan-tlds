@@ -1,18 +1,16 @@
 #!/usr/bin/python3
-from slack_sdk.webhook import WebhookClient
 import sys
 import os
-
+import json
+import requests
 
 def send_code_to_slack(code):
+  code = {"text": code}
+  code = json.dumps(code)
   token=os.environ['SLACK_API_TOKEN']
   url = f'https://hooks.slack.com/services/{token}'
-  webhook = WebhookClient(url)
-
-  response = webhook.send(text=code)
-  assert response.status_code == 200
-  assert response.body == "ok"
-
+  resp = requests.post(url, code)
+  print(resp)
 
 if __name__ == '__main__':
   # Get the filename from the first argument passed to the script.
@@ -22,6 +20,8 @@ if __name__ == '__main__':
   with open(filename, "r") as f:
     code = f.read()
   code = f'SCAN Summary\n```{code}```'
+
+  print(f'[+] Sending: {code}')
 
   # Send the code to the Slack channel as code.
   send_code_to_slack(code)
