@@ -21,12 +21,15 @@ OUTPUT=$(mktemp output-XXXXXX)
 SUBS=$(mktemp subs-XXXXXX)
 # Check if the argument is empty.
 if [[ -z $1 ]]; then
-  python3 getnexttld.py | subfinder -o $SUBS
+  TLD=$(python3 getnexttld.py)
+  echo $TLD | subfinder -o $SUBS
 else
   ARG1=$1
   if [[ "$ARG1" == "NOINC" ]]; then
-    python3 getnexttld.py NOINC | subfinder -o $SUBS
+    TLD=$(python3 getnexttld.py NOINC)
+    echo $TLD | subfinder -o $SUBS
   else
+    TLD=$ARG1
     echo $ARG1 | subfinder -o $SUBS
   fi
 fi
@@ -35,8 +38,8 @@ cat $SUBS | nuclei -es info -rl 50 -c 10 -H "X-Forwarded-For: 10.255.255.254" -t
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
   SLACK_API_TOKEN=$(cat $HOME/.config/notify/provider-config.yaml | grep "slack_webhook_url" | head --lines=1 | awk '{print $2}' | perl -pe "s{\"}{}g;s{.*services/(.*)}{\1}")
   export SLACK_API_TOKEN
-  ./send_to_slack $OUTPUT
-  cat $OUTPUT | awk 'BEGIN {print "SCAN Summary\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk -cl 10000
+  ./send_to_slack $OUTPUT "SCAN Summry for $TLD"
+  cat $OUTPUT | awk -v tld=$TLD 'BEGIN {print "SCAN Summary for " tld "\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk -cl 10000
   DTE=$(date +%Y%m%d%H%M%S)
   cat $OUTPUT > results/$DTE.txt
   
