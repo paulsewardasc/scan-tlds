@@ -22,13 +22,16 @@ SUBS=$(mktemp subs-XXXXXX)
 # Check if the argument is empty.
 if [[ -z $1 ]]; then
   TLD=$(python3 getnexttld.py)
+  echo "[+] Normal run"
   echo $TLD | subfinder -o $SUBS
 else
   ARG1=$1
   if [[ "$ARG1" == "NOINC" ]]; then
+    echo "[+] NOINC run"
     TLD=$(python3 getnexttld.py NOINC)
     echo $TLD | subfinder -o $SUBS
   else
+    echo "[+] Custom run"
     TLD=$ARG1
     echo $ARG1 | subfinder -o $SUBS
   fi
