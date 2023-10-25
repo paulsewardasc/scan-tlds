@@ -1,0 +1,17 @@
+exclude-id:
+  - weak-cipher-suites
+  - mismatched-ssl-certificate
+  - revoked-ssl-certificate
+  - expired-ssl
+severity:
+  - critical
+  - high
+  - medium
+  - low
+silent: true
+timestamp: true
+header:
+  - 'X-Forwarded-For: 10.255.255.254'
+rate-limit: 50
+concurrency: 10
+
