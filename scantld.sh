@@ -17,6 +17,8 @@ date > $RUNNING
 
 cd ${TLDSCANDIR}
 
+if ! test -f excludes.txt; then touch excludes.txt; fi
+
 OUTPUT=$(mktemp output-XXXXXX)
 SUBS=$(mktemp subs-XXXXXX)
 # Check if the argument is empty.
@@ -37,11 +39,11 @@ else
   fi
 fi
 
-cat $SUBS | nuclei -o $OUTPUT
+cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
   SLACK_API_TOKEN=$(cat $HOME/.config/notify/provider-config.yaml | grep "slack_webhook_url" | head --lines=1 | awk '{print $2}' | perl -pe "s{\"}{}g;s{.*services/(.*)}{\1}")
   export SLACK_API_TOKEN
-  ./send_to_slack $OUTPUT "SCAN Summry for $TLD"
+  ./send_to_slack $OUTPUT "SCAN Summary for $TLD"
   cat $OUTPUT | awk -v tld=$TLD 'BEGIN {print "SCAN Summary for " tld "\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk -cl 10000
   DTE=$(date +%Y%m%d%H%M%S)
   cat $OUTPUT > results/$DTE.txt
