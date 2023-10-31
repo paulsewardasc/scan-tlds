@@ -44,9 +44,9 @@ if [[ -z $CUSTOMTLD ]]; then
 else
   TLD=$CUSTOMTLD
   if [[ -z $FINDSUBS ]]; then
-    echo $TLD | subfinder -o $SUBS
-  else
     echo $TLD > $SUBS
+  else
+    echo $TLD | subfinder -o $SUBS
   fi
 fi
 
