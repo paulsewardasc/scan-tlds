@@ -23,11 +23,16 @@ if __name__ == '__main__':
   # Read the contents of the text file.
   with open(filename, "r") as f:
     code = f.read()
-  code = f'{title}\n```{code}```'
 
-  print(f'[+] Sending: {code}')
+  array = []
+  for i in range(0, len(code), 2048):
+    array.append(code[i:i + 2048])
+
 
   # Send the code to the Slack channel as code.
-  send_code_to_slack(code)
+  for code in array:
+    print(f'[+] Sending: {code}')
+    code = f'{title}\n```{code}```'
+    #send_code_to_slack(code)
 
 
