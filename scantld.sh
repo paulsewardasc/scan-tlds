@@ -4,8 +4,8 @@ if [ -f "$RUNNING" ]
 then
   exit
 fi
-#set -x
-#{
+set -x
+{
 date > $RUNNING
 . ~/.bashrc
 ### This program getnexttld.py looks for a file called tlds.txt with Top Level Domains in and saves it's place in a file called tlds.ind ###
@@ -35,18 +35,22 @@ else
   else
     echo "[+] Custom run"
     TLD=$ARG1
-    echo $ARG1 | subfinder -o $SUBS
+    if [[ -z $2 ]]; then
+      echo $ARG1 | subfinder -o $SUBS
+    else
+      echo $ARG1 > $SUBS
+    fi
   fi
 fi
 
 echo "[+] SUBS: "
 cat $SUBS
 
-# If ARG 2 has something in run that template only
-if [[ -z $2 ]]; then
+# If ARG 3 has something in run that template only
+if [[ -z $3 ]]; then
   cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
 else
-  cat $SUBS | grep -v -x -f excludes.txt | nuclei -t $2 -o $OUTPUT
+  cat $SUBS | grep -v -x -f excludes.txt | nuclei -t $3 -o $OUTPUT
 fi
 
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
@@ -62,4 +66,4 @@ fi
 rm $OUTPUT
 rm $SUBS
 rm $RUNNING
-#} > /tmp/scantld.log 2>&1
+} > /tmp/scantld.log 2>&1
