@@ -7,7 +7,22 @@ fi
 set -x
 {
 date > $RUNNING
-. ~/.bashrc
+. ~/.bashrc > /dev/null
+
+# Get ARGS CUSTOMTLD, FINDSUBS, TEMPLATE
+
+for ARGUMENT in "$@"
+do
+   KEY=$(echo $ARGUMENT | cut -f1 -d=)
+
+   KEY_LENGTH=${#KEY}
+   VALUE="${ARGUMENT:$KEY_LENGTH+1}"
+
+   export "$KEY"="$VALUE"
+done
+
+
+
 ### This program getnexttld.py looks for a file called tlds.txt with Top Level Domains in and saves it's place in a file called tlds.ind ###
 
 ### You can the run this using a cron to scan a TLD every hour or day depending on the number of TLDs you have
@@ -21,40 +36,26 @@ if ! test -f excludes.txt; then touch excludes.txt; fi
 
 OUTPUT=$(mktemp output-XXXXXX)
 SUBS=$(mktemp subs-XXXXXX)
-# Check if the ARG 1 is empty.
-if [[ -z $1 ]]; then
+# Check if the CUSTOMTLD exists, if not go to the next TLD in the file list
+if [[ -z $CUSTOMTLD ]]; then
   TLD=$(python3 getnexttld.py)
   echo "[+] Normal run"
   echo $TLD | subfinder -o $SUBS
 else
-  ARG1=$1
-  if [[ "$ARG1" == "NOINC" ]]; then
-    echo "[+] NOINC run"
-    TLD=$(python3 getnexttld.py NOINC)
+  ARG1=$CUSTOMTLD
+  TLD=$CUSTOMTLD
+  if [[ -z $FINDSUBS ]]; then
     echo $TLD | subfinder -o $SUBS
   else
-    echo "[+] Custom run"
-    TLD=$ARG1
-    if [[ -z $2 ]]; then
-      SEARCHTLD=$ARG2
-      if [[ "$SEARCHTLD" == "YES" ]]; then
-        echo $ARG1 | subfinder -o $SUBS
-      fi
-      if [[ "$SEARCHTLD" == "NO" ]]; then
-        echo $ARG1 > $SUBS
-      fi
-    fi
+    echo $TLD > $SUBS
   fi
 fi
 
-echo "[+] SUBS: "
-cat $SUBS
-
-# If ARG 3 has something in run that template only
-if [[ -z $3 ]]; then
+# If $TEMPLATE has something in run that template only
+if [[ -z $TEMPLATE ]]; then
   cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
 else
-  cat $SUBS | grep -v -x -f excludes.txt | nuclei -t $3 -o $OUTPUT
+  cat $SUBS | grep -v -x -f excludes.txt | nuclei -t $TEMPLATE -o $OUTPUT
 fi
 
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
