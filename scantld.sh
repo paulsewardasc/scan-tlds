@@ -42,7 +42,6 @@ if [[ -z $CUSTOMTLD ]]; then
   echo "[+] Normal run"
   echo $TLD | subfinder -o $SUBS
 else
-  ARG1=$CUSTOMTLD
   TLD=$CUSTOMTLD
   if [[ -z $FINDSUBS ]]; then
     echo $TLD | subfinder -o $SUBS
@@ -50,6 +49,10 @@ else
     echo $TLD > $SUBS
   fi
 fi
+
+echo "----------------"
+cat $SUBS
+echo "----------------"
 
 # If $TEMPLATE has something in run that template only
 if [[ -z $TEMPLATE ]]; then
