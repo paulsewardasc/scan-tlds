@@ -21,7 +21,7 @@ if ! test -f excludes.txt; then touch excludes.txt; fi
 
 OUTPUT=$(mktemp output-XXXXXX)
 SUBS=$(mktemp subs-XXXXXX)
-# Check if the argument is empty.
+# Check if the ARG 1 is empty.
 if [[ -z $1 ]]; then
   TLD=$(python3 getnexttld.py)
   echo "[+] Normal run"
@@ -39,7 +39,13 @@ else
   fi
 fi
 
-cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
+# If ARG 2 has something in run that template only
+if [[ -z $2 ]]; then
+  cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
+else
+  cat $SUBS | grep -v -x -f excludes.txt | nuclei -t $2 -o $OUTPUT
+fi
+
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
   SLACK_API_TOKEN=$(cat $HOME/.config/notify/provider-config.yaml | grep "slack_webhook_url" | head --lines=1 | awk '{print $2}' | perl -pe "s{\"}{}g;s{.*services/(.*)}{\1}")
   export SLACK_API_TOKEN
