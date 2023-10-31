@@ -36,9 +36,13 @@ else
     echo "[+] Custom run"
     TLD=$ARG1
     if [[ -z $2 ]]; then
-      echo $ARG1 | subfinder -o $SUBS
-    else
-      echo $ARG1 > $SUBS
+      SEARCHTLD=$ARG2
+      if [[ "$SEARCHTLD" == "YES" ]]; then
+        echo $ARG1 | subfinder -o $SUBS
+      fi
+      if [[ "$SEARCHTLD" == "NO" ]]; then
+        echo $ARG1 > $SUBS
+      fi
     fi
   fi
 fi
