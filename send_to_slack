@@ -33,6 +33,6 @@ if __name__ == '__main__':
   for code in array:
     print(f'[+] Sending: {code}')
     code = f'{title}\n```{code}```'
-    #send_code_to_slack(code)
+    send_code_to_slack(code)
 
 
