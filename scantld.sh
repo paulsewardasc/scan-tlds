@@ -39,6 +39,7 @@ else
   fi
 fi
 
+echo "[+] SUBS: $SUBS"
 # If ARG 2 has something in run that template only
 if [[ -z $2 ]]; then
   cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
