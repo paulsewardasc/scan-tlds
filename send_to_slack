@@ -18,7 +18,7 @@ def send(block,priority,title):
         for code in array:
           code = f'{title}\n```{code}```'
           print(code)
-          #send_code_to_slack(code)
+          send_code_to_slack(code)
 
 
 def send_code_to_slack(code):
