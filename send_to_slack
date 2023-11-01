@@ -18,7 +18,7 @@ def send(block,priority,title):
         for code in array:
           code = f'{title}\n```{code}```'
           print(code)
-          send_code_to_slack(code)
+          #send_code_to_slack(code)
 
 
 def send_code_to_slack(code):
@@ -49,32 +49,30 @@ if __name__ == '__main__':
   info=[]
   other=[]
 
-  # Send the code to the Slack channel as code.
-  print(f'[+] Sending: {code}')
-  print(code)
+  priorities = {
+    "[low]": [],
+    "[medium]": [],
+    "[high]": [],
+    "[critical]": [],
+    "[info]": [],
+    "other": []
+  }
+
   lines = code.split("\n")
   for line in lines:
-    fields = line.split(" ")
-    if len(fields) > 1:
-      priority = fields[4]
-      if priority == "[low]":
-        low.append(line)
-      elif priority == "[medium]":
-        medium.append(line)
-      elif priority == "[high]":
-        high.append(line)
-      elif priority == "[critical]":
-        critical.append(line)
-      elif priority == "[info]":
-        info.append(line)
-      else:
-        other.append(line)
+      fields = line.split(" ")
+      if len(fields) > 1:
+          priority = fields[4]
+          if priority in priorities:
+              priorities[priority].append(line)
+          else:
+              priorities["other"].append(line) 
 
-    send(info,"info",title)
-    send(low,"low",title)
-    send(medium,"medium",title)
-    send(high,"high",title)
-    send(critical,"critical",title)
+  send(priorities["[info]"],"info",title)
+  send(priorities["[low]"],"low",title)
+  send(priorities["[medium]"],"medium",title)
+  send(priorities["[high]"],"high",title)
+  send(priorities["[critical]"],"critical",title)
  
 
 
