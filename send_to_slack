@@ -4,6 +4,23 @@ import os
 import json
 import requests
 
+
+def send(block,priority,title):
+    title = title + f' ({priority})'
+    code = ''        
+    for line in block:
+      print(f'[+] {priority}: {line}')
+      code = code + f'{line}\n'
+    if len(code) > 0:
+      array = []
+      for i in range(0, len(code), 2048):
+        array.append(code[i:i + 2048])
+        for code in array:
+          code = f'{title}\n```{code}```'
+          print(code)
+          send_code_to_slack(code)
+
+
 def send_code_to_slack(code):
   code = {"text": code}
   code = json.dumps(code)
@@ -24,15 +41,40 @@ if __name__ == '__main__':
   with open(filename, "r") as f:
     code = f.read()
 
-  array = []
-  for i in range(0, len(code), 2048):
-    array.append(code[i:i + 2048])
 
+  low=[]
+  medium=[]
+  high=[]
+  critical=[]
+  info=[]
+  other=[]
 
   # Send the code to the Slack channel as code.
-  for code in array:
-    print(f'[+] Sending: {code}')
-    code = f'{title}\n```{code}```'
-    send_code_to_slack(code)
+  print(f'[+] Sending: {code}')
+  print(code)
+  lines = code.split("\n")
+  for line in lines:
+    fields = line.split(" ")
+    if len(fields) > 1:
+      priority = fields[4]
+      if priority == "[low]":
+        low.append(line)
+      elif priority == "[medium]":
+        medium.append(line)
+      elif priority == "[high]":
+        high.append(line)
+      elif priority == "[critical]":
+        critical.append(line)
+      elif priority == "[info]":
+        info.append(line)
+      else:
+        other.append(line)
+
+    send(info,"info",title)
+    send(low,"low",title)
+    send(medium,"medium",title)
+    send(high,"high",title)
+    send(critical,"critical",title)
+ 
 
 
