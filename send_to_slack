@@ -5,21 +5,27 @@ import json
 import requests
 
 
+def split_text_blocks(lines):
+    blocks = []
+    current_block = ""
+    for line in lines:
+        if len(current_block) + len(line) <= 2000:
+            current_block += line + "\n"
+        else:
+            blocks.append(current_block)
+            current_block = line + "\n"
+    if current_block:
+        blocks.append(current_block)
+    return blocks
+
 def send(block,priority,title):
     title = title + f' ({priority})'
-    code = ''        
-    for line in block:
-      #print(f'[+] {priority}: {line}')
-      code = code + f'{line}\n'
-    if len(code) > 0:
-      array = []
-      for i in range(0, len(code), 2048):
-        array.append(code[i:i + 2048])
-        for code in array:
-          code = f'{title}\n```{code}```'
-          print(code)
-          send_code_to_slack(code)
-
+    blocks = split_text_blocks(block)
+    for block in blocks:
+      data = f'{title}\n```{block}```'
+      print(f'[-] data: {data}, {len(data)}')
+      send_code_to_slack(data)
+      None
 
 def send_code_to_slack(code):
   code = {"text": code}
