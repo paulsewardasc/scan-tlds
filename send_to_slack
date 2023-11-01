@@ -41,14 +41,6 @@ if __name__ == '__main__':
   with open(filename, "r") as f:
     code = f.read()
 
-
-  low=[]
-  medium=[]
-  high=[]
-  critical=[]
-  info=[]
-  other=[]
-
   priorities = {
     "[low]": [],
     "[medium]": [],
