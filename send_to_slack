@@ -9,7 +9,7 @@ def split_text_blocks(lines):
     blocks = []
     current_block = ""
     for line in lines:
-        if len(current_block) + len(line) <= 2000:
+        if len(current_block) + len(line) <= 3500:
             current_block += line + "\n"
         else:
             blocks.append(current_block)
