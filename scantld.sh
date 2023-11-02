@@ -66,6 +66,7 @@ if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
   export SLACK_API_TOKEN
   ./send_to_slack $OUTPUT "SCAN Summary for $TLD"
   cat $OUTPUT | awk -v tld=$TLD 'BEGIN {print "SCAN Summary for " tld "\r"} {print $0}' | perl -pe 's{\n}{\r}gsx' | notify -p discord -bulk -cl 10000
+  cat $OUTPUT | grep "^\[20" | perl -pe "s{.*?\] (.*)}{\1}" | grep -vE "https?://[0-9]" | anew ../new.txt | notify -p discord -bulk -cl 10000
   DTE=$(date +%Y%m%d%H%M%S)
   cat $OUTPUT > results/$DTE.txt
   
