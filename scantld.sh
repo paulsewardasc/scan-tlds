@@ -50,10 +50,6 @@ else
   fi
 fi
 
-echo "----------------"
-cat $SUBS
-echo "----------------"
-
 # If $TEMPLATE has something in run that template only
 if [[ -z $TEMPLATE ]]; then
   cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
