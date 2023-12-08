@@ -58,7 +58,7 @@ if [[ -z $TEMPLATE ]]; then
   for SUB in $(cat $SUBS); do
     echo "custom-nuclei-templates/${SUB}.txt"
     if [[ -f "custom-nuclei-templates/${SUB}.txt" ]]; then
-      echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
+      echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT -t custom-nuclei-templates/${SUB}.txt
     else
       echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
     fi
