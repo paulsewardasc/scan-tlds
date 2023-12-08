@@ -55,12 +55,14 @@ fi
 
 # If $TEMPLATE has something in run that template only
 if [[ -z $TEMPLATE ]]; then
-  echo "custom-nuclei-templates/${SUBS}.txt"
-  if [[ -f "custom-nuclei-templates/${SUBS}.txt" ]]; then
-    cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
-  else
-    cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
-  fi
+  for SUB in $(cat $SUBS); do
+    echo "custom-nuclei-templates/${SUBS}.txt"
+    if [[ -f "custom-nuclei-templates/${SUB}.txt" ]]; then
+      echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
+    else
+      echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
+    fi
+  done
 else
   cat $SUBS | grep -v -x -f excludes.txt | nuclei -t $TEMPLATE -o $OUTPUT
 fi
