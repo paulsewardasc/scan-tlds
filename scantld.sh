@@ -21,9 +21,9 @@ done
 
 if [[ -z $DEBUG ]]; then
   echo "[+] Debug mode"
-else
   set -x
-  {
+else
+  set +x
 fi
 
 ### This program getnexttld.py looks for a file called tlds.txt with Top Level Domains in and saves it's place in a file called tlds.ind ###
@@ -80,9 +80,9 @@ rm $OUTPUT
 rm $SUBS
 rm $RUNNING
 
-if [[ -z $DEBUG ]]; then
-  echo "[+] Debug ended"
-else
-  } > /tmp/scantld.log 2>&1
-fi
+#if [[ -z $DEBUG ]]; then
+#  echo "[+] Debug ended"
+#else
+#  } > /tmp/scantld.log 2>&1
+#fi
 
