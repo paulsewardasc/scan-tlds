@@ -5,6 +5,7 @@ then
   exit
 fi
 date > $RUNNING
+
 . ~/.bashrc > /dev/null
 
 # Get ARGS CUSTOMTLD, FINDSUBS, TEMPLATE
@@ -57,9 +58,10 @@ fi
 if [[ -z $TEMPLATE ]]; then
   for SUB in $(cat $SUBS); do
     if [[ -f "custom-nuclei-templates/${SUB}.txt" ]]; then
-      echo "[+] Using config from custom-nuclei-configs/${SUB}.txt"
+      echo "[+] Using config from custom-nuclei-configs/${SUB}.txt for ${SUB}"
       echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT -config custom-nuclei-configs/${SUB}.txt
     else
+      echo "[+] Using default template for ${SUB}"
       echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
     fi
   done
