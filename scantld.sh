@@ -53,7 +53,7 @@ fi
 # If $TEMPLATE has something in run that template only
 if [[ -z $TEMPLATE ]]; then
   echo "custom-nuclei-templates/${SUBS}.txt"
-  if [[ -f "custom-nuclei-templates/${SUBS}.txt" ]] then
+  if [[ -f "custom-nuclei-templates/${SUBS}.txt" ]]; then
     cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
   else
     cat $SUBS | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
