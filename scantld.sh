@@ -27,6 +27,8 @@ else
   set +x
 fi
 
+export ENABLE_CLOUD_UPLOAD=true
+
 ### This program getnexttld.py looks for a file called tlds.txt with Top Level Domains in and saves it's place in a file called tlds.ind ###
 
 ### You can the run this using a cron to scan a TLD every hour or day depending on the number of TLDs you have
@@ -59,14 +61,14 @@ if [[ -z $TEMPLATE ]]; then
   for SUB in $(cat $SUBS); do
     if [[ -f "custom-nuclei-templates/${SUB}.txt" ]]; then
       echo "[+] Using config from custom-nuclei-configs/${SUB}.txt for ${SUB}"
-      echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT -config custom-nuclei-configs/${SUB}.txt
+      echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT -config custom-nuclei-configs/${SUB}.txt -cloud-upload
     else
       echo "[+] Using default template for ${SUB}"
-      echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT
+      echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT -cloud-upload
     fi
   done
 else
-  cat $SUBS | grep -v -x -f excludes.txt | nuclei -t $TEMPLATE -o $OUTPUT
+  cat $SUBS | grep -v -x -f excludes.txt | nuclei -t $TEMPLATE -o $OUTPUT -cloud-upload
 fi
 
 if [[ $(wc -l < $OUTPUT) -ge 1 ]]; then
