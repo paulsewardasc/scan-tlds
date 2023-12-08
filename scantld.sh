@@ -4,8 +4,6 @@ if [ -f "$RUNNING" ]
 then
   exit
 fi
-set -x
-{
 date > $RUNNING
 . ~/.bashrc > /dev/null
 
@@ -21,7 +19,12 @@ do
    export "$KEY"="$VALUE"
 done
 
-
+if [[ -z $DEBUG ]]; then
+  echo "[+] Debug mode"
+else
+  set -x
+  {
+fi
 
 ### This program getnexttld.py looks for a file called tlds.txt with Top Level Domains in and saves it's place in a file called tlds.ind ###
 
@@ -76,4 +79,10 @@ fi
 rm $OUTPUT
 rm $SUBS
 rm $RUNNING
-} > /tmp/scantld.log 2>&1
+
+if [[ -z $DEBUG ]]; then
+  echo "[+] Debug ended"
+else
+  } > /tmp/scantld.log 2>&1
+fi
+
