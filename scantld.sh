@@ -62,9 +62,11 @@ if [[ -z $TEMPLATE ]]; then
     if [[ -f "custom-nuclei-templates/${SUB}.txt" ]]; then
       echo "[+] Using config from custom-nuclei-configs/${SUB}.txt for ${SUB}"
       echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT -config custom-nuclei-configs/${SUB}.txt -cloud-upload
+      echo "[+] Finished scan"
     else
       echo "[+] Using default template for ${SUB}"
       echo $SUB | grep -v -x -f excludes.txt | nuclei -o $OUTPUT -cloud-upload
+      echo "[+] Finished scan"
     fi
   done
 else
